@@ -1,4 +1,4 @@
-package br.com.ocoelhogabriel.api.controller;
+package br.com.ocoelhogabriel.adapter.controller;
 
 import java.util.List;
 import java.util.Optional;
