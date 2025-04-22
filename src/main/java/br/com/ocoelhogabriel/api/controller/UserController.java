@@ -50,6 +50,7 @@ public class UserController {
         Optional<User> existing = repository.findById(id);
         if (existing.isPresent()) {
             updatedUser.setId(id);
+            updatedUser.setId(id);
             return ResponseEntity.ok(repository.save(updatedUser));
         } else {
             return ResponseEntity.notFound().build();
