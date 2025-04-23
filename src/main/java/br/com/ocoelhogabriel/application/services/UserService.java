@@ -1,9 +1,0 @@
-package br.com.ocoelhogabriel.application.services;
-
-public class UserService {
-
-    public UserService() {
-        // TODO Auto-generated constructor stub
-    }
-
-}
