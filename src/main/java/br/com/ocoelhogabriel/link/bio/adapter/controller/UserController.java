@@ -1,7 +1,5 @@
 package br.com.ocoelhogabriel.link.bio.adapter.controller;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -14,56 +12,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ocoelhogabriel.link.bio.domain.entity.User;
-import br.com.ocoelhogabriel.link.bio.domain.entity.repository.UserRepository;
+import br.com.ocoelhogabriel.link.bio.application.services.UserService;
+import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateUserDTO;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserRepository repository;
+    private final UserService service;
 
-    public UserController(UserRepository repository) {
-        this.repository = repository;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity<Object> getAllServices() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
-        Optional<User> user = repository.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Object> getServiceById(@PathVariable UUID id) throws Exception {
+        return service.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User savedUser = repository.save(user);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<Object> createService(@Valid @RequestBody CreateUpdateUserDTO createService) {
+        return service.create(createService);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @Valid @RequestBody User updatedUser) {
-        Optional<User> existing = repository.findById(id);
-        if (existing.isPresent()) {
-            updatedUser.setId(id);
-            updatedUser.setId(id);
-            return ResponseEntity.ok(repository.save(updatedUser));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Object> updateService(@PathVariable UUID id, @Valid @RequestBody CreateUpdateUserDTO updatedService) {
+        return service.update(id, updatedService);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Object> deleteService(@PathVariable UUID id) {
+        return service.delete(id);
     }
 }

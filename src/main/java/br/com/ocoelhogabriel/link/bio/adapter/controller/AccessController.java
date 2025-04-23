@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ocoelhogabriel.link.bio.application.services.LinkBioService;
-import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateLinkBioDTO;
+import br.com.ocoelhogabriel.link.bio.application.services.AccessService;
+import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateAccessDTO;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/link-bio")
-public class LinlkBioController {
+@RequestMapping("/api/access")
+public class AccessController {
 
-    private final LinkBioService service;
+    private final AccessService service;
 
-    protected LinlkBioController(LinkBioService service) {
+    protected AccessController(AccessService service) {
         super();
         this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllLinkBios() {
+    public ResponseEntity<Object> getAllAccesss() {
         return service.findAll();
     }
 
@@ -38,12 +38,12 @@ public class LinlkBioController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createService(@Valid @RequestBody CreateUpdateLinkBioDTO createService) {
+    public ResponseEntity<Object> createService(@Valid @RequestBody CreateUpdateAccessDTO createService) {
         return service.create(createService);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateService(@PathVariable UUID id, @Valid @RequestBody CreateUpdateLinkBioDTO updatedService) {
+    public ResponseEntity<Object> updateService(@PathVariable UUID id, @Valid @RequestBody CreateUpdateAccessDTO updatedService) {
         return service.update(id, updatedService);
     }
 

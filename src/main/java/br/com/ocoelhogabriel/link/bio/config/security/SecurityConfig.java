@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.ocoelhogabriel.link.bio.shared.custom.CustomAccessDeniedHandler;
+import br.com.ocoelhogabriel.link.bio.shared.custom.CustomAuthenticationEntryPoint;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -26,7 +28,17 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 public class SecurityConfig {
 
     // Lista de rotas públicas permitidas
-    private static final List<String> PUBLIC_ROUTES = List.of("/auth/login", "/auth/register", "/swagger-ui/**", "/v3/api-docs/**");
+    private static final List<String> PUBLIC_ROUTES = List.of("/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html",
+            "/swagger-ui/index.html");
 
     // Rotas por método + role necessária
     private static final Map<HttpMethod, Map<String, String>> METHOD_ROLE_ROUTES = Map.of(HttpMethod.GET,
@@ -47,8 +59,11 @@ public class SecurityConfig {
             // Autorização por método + rota + role
             METHOD_ROLE_ROUTES.forEach((method, routes) -> routes.forEach((route, role) -> auth.requestMatchers(method, route).hasRole(role)));
 
-            auth.anyRequest().authenticated();
-        }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
+            auth.anyRequest().permitAll();
+        })
+            .exceptionHandling(ex -> ex.accessDeniedHandler(new CustomAccessDeniedHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     @Bean

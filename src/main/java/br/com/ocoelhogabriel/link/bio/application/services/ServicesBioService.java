@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateServicesBioDTO;
 import br.com.ocoelhogabriel.link.bio.domain.dto.response.ServicesBioResponseDTO;
 import br.com.ocoelhogabriel.link.bio.domain.entity.repository.ServicesBioRepository;
 import jakarta.persistence.EntityNotFoundException;
 
+@Service
 public class ServicesBioService {
 
     private final ServicesBioRepository repository;

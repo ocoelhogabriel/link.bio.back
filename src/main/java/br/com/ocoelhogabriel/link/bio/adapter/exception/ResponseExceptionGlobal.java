@@ -40,61 +40,61 @@ public class ResponseExceptionGlobal {
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<Object> handleIOException(IOException ex) {
-        log.error("IOException: ", ex);
+        log.error("IOException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.badRequest(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(NoSuchAlgorithmException.class)
     public ResponseEntity<Object> handleNoSuchAlgorithmException(NoSuchAlgorithmException ex) {
-        log.error("NoSuchAlgorithmException: {}", ex);
+        log.error("NoSuchAlgorithmException: {}{} - ", ex.getMessage(), ex);
         return ResponseUtil.badRequest(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Object> handleNullPointerException(NullPointerException ex) {
-        log.error("NullPointerException: ", ex);
+        log.error("NullPointerException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.badRequest(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException ex) {
-        log.error("TokenExpiredException: ", ex);
+        log.error("TokenExpiredException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.unauthorized(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(JWTVerificationException.class)
     public ResponseEntity<Object> handleJWTVerificationException(JWTVerificationException ex) {
-        log.error("JWTVerificationException: ", ex);
+        log.error("JWTVerificationException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.unauthorized(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(JWTCreationException.class)
     public ResponseEntity<Object> handleJWTCreationException(JWTCreationException ex) {
-        log.error("JWTCreationException: ", ex);
+        log.error("JWTCreationException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.unauthorized(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-        log.error("AccessDeniedException: ", ex);
+        log.error("AccessDeniedException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.unauthorized(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
-        log.error("RuntimeException: ", ex);
+        log.error("RuntimeException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.serverError(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(HttpMessageConversionException.class)
     public ResponseEntity<Object> handleHttpMessageConversionException(HttpMessageConversionException ex) {
-        log.error("HttpMessageConversionException: ", ex);
+        log.error("HttpMessageConversionException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.serverError(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {
-        log.error("Exception: ", ex);
+        log.error("Exception: {} - ", ex.getMessage(), ex);
         return ResponseUtil.serverError("An unexpected error occurred", ex);
     }
 
@@ -105,36 +105,36 @@ public class ResponseExceptionGlobal {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleIllegalArgumentException(IllegalArgumentException ex) {
-        log.debug("IllegalArgumentException: ", ex);
+        log.debug("IllegalArgumentException: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public void handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        log.debug("UsernameNotFoundException: ", ex);
+        log.debug("UsernameNotFoundException: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(SignatureException.class)
     public void handleSignatureException(SignatureException ex) {
-        log.debug("SignatureException: ", ex);
+        log.debug("SignatureException: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(AssertionError.class)
     public void handleAssertionError(AssertionError ex) {
-        log.debug("AssertionError: ", ex);
+        log.debug("AssertionError: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(ParseException.class)
     public void handleParseException(ParseException ex) {
-        log.debug("ParseException: ", ex);
+        log.debug("ParseException: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(JsonMappingException.class)
     public void handleJsonMappingException(JsonMappingException ex) {
-        log.debug("JsonMappingException: ", ex);
+        log.debug("JsonMappingException: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(JsonProcessingException.class)
     public void handleJsonProcessingException(JsonProcessingException ex) {
-        log.debug("JsonProcessingException: ", ex);
+        log.debug("JsonProcessingException: {} - ", ex.getMessage(), ex);
     }
 }
