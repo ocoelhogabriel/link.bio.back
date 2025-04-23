@@ -10,22 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.LoginRequestDTO;
-import br.com.ocoelhogabriel.link.bio.domain.dto.request.RegisterRequest;
+import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateAccessDTO;
 import br.com.ocoelhogabriel.link.bio.domain.dto.response.AuthResponse;
 import br.com.ocoelhogabriel.link.bio.domain.entity.Access;
 import br.com.ocoelhogabriel.link.bio.domain.entity.repository.AccessRepository;
-import br.com.ocoelhogabriel.link.bio.domain.entity.repository.UserRepository;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
     private final AccessRepository accessRepository;
 
-    public AuthController(UserRepository userRepository, AccessRepository accessRepository) {
-        this.userRepository = userRepository;
+    public AuthController(AccessRepository accessRepository) {
         this.accessRepository = accessRepository;
     }
 
@@ -47,14 +44,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<Object> register(@Valid @RequestBody CreateUpdateAccessDTO request) {
         if (accessRepository.existsByLogin(request.getLogin())) {
             return ResponseEntity.badRequest().body("Login já em uso");
         }
 
-        Access access = new Access(null, request.getUserId() , request.getLogin(), request.getPassword(), UUID.randomUUID().toString());
+        Access access = new Access(null, request.getUserId(), request.getLogin(), request.getPassword(), UUID.randomUUID().toString(), request.getRole());
         access = accessRepository.save(access);
-
 
         return ResponseEntity.ok(new AuthResponse(access.getToken(), access.getUserId()));
     }

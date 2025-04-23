@@ -1,11 +1,7 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.UUID;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,125 +12,87 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "users")
-public class User extends UUIDAbstract implements UserDetails {
+public class User extends UUIDAbstract {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
 
-	@Column(nullable = false)
-	private Long idLogin;
+    @Email
+    @NotBlank
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	@NotBlank
-	@Column(nullable = false)
-	private String name;
+    @Past
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
-	@Email
-	@NotBlank
-	@Column(nullable = false, unique = true)
-	private String email;
+    @Column
+    private String phone;
 
-	@Past
-	@Column(name = "birth_date")
-	private LocalDate birthDate;
+    public User(UUID id, String name, String email, LocalDate birthDate, String phone) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.phone = phone;
+    }
 
-	@Column
-	private String phone;
+    public User(UUID id) {
+        super(id);
+        // Auto-generated constructor stub
+    }
 
-	public User(UUID id, Long idLogin, String name, String email, LocalDate birthDate, String phone) {
-		super(id);
-		this.idLogin = idLogin;
-		this.name = name;
-		this.email = email;
-		this.birthDate = birthDate;
-		this.phone = phone;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public User(UUID id) {
-		super(id);
-		// Auto-generated constructor stub
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Long getIdLogin() {
-		return idLogin;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setIdLogin(Long idLogin) {
-		this.idLogin = idLogin;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("UserRepository [");
-		if (idLogin != null) {
-			builder.append("idLogin=").append(idLogin).append(", ");
-		}
-		if (name != null) {
-			builder.append("name=").append(name).append(", ");
-		}
-		if (email != null) {
-			builder.append("email=").append(email).append(", ");
-		}
-		if (birthDate != null) {
-			builder.append("birthDate=").append(birthDate).append(", ");
-		}
-		if (phone != null) {
-			builder.append("phone=").append(phone);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("UserRepository [");
+        if (name != null) {
+            builder.append("name=").append(name).append(", ");
+        }
+        if (email != null) {
+            builder.append("email=").append(email).append(", ");
+        }
+        if (birthDate != null) {
+            builder.append("birthDate=").append(birthDate).append(", ");
+        }
+        if (phone != null) {
+            builder.append("phone=").append(phone);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 
 }

@@ -7,8 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "services")
-public class Services extends UUIDAbstract {
+@Table(name = "services_bio")
+public class ServicesBio extends UUIDAbstract {
 
     @Column(nullable = false)
     private UUID userId;
@@ -16,13 +16,13 @@ public class Services extends UUIDAbstract {
     @Column(name = "link_de_bio", nullable = false)
     private String linkDeBio;
 
-    public Services(UUID id, UUID userId, String linkDeBio) {
+    public ServicesBio(UUID id, UUID userId, String linkDeBio) {
         super(id);
         this.userId = userId;
         this.linkDeBio = linkDeBio;
     }
 
-    public Services(UUID id) {
+    public ServicesBio(UUID id) {
         super(id);
         // Auto-generated constructor stub
     }

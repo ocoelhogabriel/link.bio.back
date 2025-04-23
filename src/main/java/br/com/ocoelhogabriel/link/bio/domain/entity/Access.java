@@ -1,7 +1,14 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import br.com.ocoelhogabriel.link.bio.domain.enuns.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -9,7 +16,12 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "access")
-public class Access extends UUIDAbstract {
+public class Access extends UUIDAbstract implements UserDetails {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
     private UUID userId;
@@ -25,12 +37,36 @@ public class Access extends UUIDAbstract {
     @Column
     private String token;
 
-    public Access(UUID id, UUID userId, String login, String password, String token) {
+    @Column
+    private UserRole role;
+
+    public Access(UUID id, UUID userId, @NotBlank String login, @NotBlank String password, String token, UserRole role) {
         super(id);
         this.userId = userId;
         this.login = login;
         this.password = password;
         this.token = token;
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        // Auto-generated method stub
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        // Auto-generated method stub
+        return this.login;
     }
 
     public Access(UUID id) {
@@ -53,9 +89,9 @@ public class Access extends UUIDAbstract {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    // public String getPassword() {
+    // return password;
+    // }
 
     public void setPassword(String password) {
         this.password = password;
@@ -67,6 +103,14 @@ public class Access extends UUIDAbstract {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
 }

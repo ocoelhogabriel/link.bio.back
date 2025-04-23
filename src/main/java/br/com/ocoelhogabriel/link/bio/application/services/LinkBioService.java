@@ -5,50 +5,50 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
-import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateUserDTO;
-import br.com.ocoelhogabriel.link.bio.domain.dto.response.UserResponseDTO;
-import br.com.ocoelhogabriel.link.bio.domain.entity.repository.UserRepository;
+import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateLinkBioDTO;
+import br.com.ocoelhogabriel.link.bio.domain.dto.response.LinkBioResponseDTO;
+import br.com.ocoelhogabriel.link.bio.domain.entity.repository.LinkBioRepository;
 import jakarta.persistence.EntityNotFoundException;
 
-public class UserService {
+public class LinkBioService {
 
-    private final UserRepository repository;
+    private final LinkBioRepository repository;
 
-    public UserService(UserRepository repository) {
+    public LinkBioService(LinkBioRepository repository) {
+        super();
         this.repository = repository;
-        // Auto-generated constructor stub
     }
 
     public ResponseEntity<Object> findById(UUID id) throws Exception {
-        UserResponseDTO service = repository.findById(id).map(UserResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Service not found"));
+        LinkBioResponseDTO service = repository.findById(id).map(LinkBioResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("LinkBio not found"));
         return ResponseEntity.ok(service);
     }
 
     public ResponseEntity<Object> findAll() {
         try {
-            List<UserResponseDTO> services = repository.findAll().stream().map(UserResponseDTO::new).toList();
+            List<LinkBioResponseDTO> services = repository.findAll().stream().map(LinkBioResponseDTO::new).toList();
             return ResponseEntity.ok(services);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public ResponseEntity<Object> create(CreateUpdateUserDTO service) {
+    public ResponseEntity<Object> create(CreateUpdateLinkBioDTO service) {
         try {
-            UserResponseDTO createdService = new UserResponseDTO(repository.save(service.toEntity()));
-            return ResponseEntity.ok(createdService);
+            LinkBioResponseDTO createdLinkBio = new LinkBioResponseDTO(repository.save(service.toEntity()));
+            return ResponseEntity.ok(createdLinkBio);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public ResponseEntity<Object> update(UUID id, CreateUpdateUserDTO service) {
+    public ResponseEntity<Object> update(UUID id, CreateUpdateLinkBioDTO service) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
-            UserResponseDTO updatedService = new UserResponseDTO(repository.save(service.toEntity(id)));
-            return ResponseEntity.ok(updatedService);
+            LinkBioResponseDTO updatedLinkBio = new LinkBioResponseDTO(repository.save(service.toEntity(id)));
+            return ResponseEntity.ok(updatedLinkBio);
         } catch (Exception e) {
             throw e;
         }
@@ -65,4 +65,5 @@ public class UserService {
             throw e;
         }
     }
+
 }

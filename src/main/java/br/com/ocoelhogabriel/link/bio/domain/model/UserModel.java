@@ -12,20 +12,16 @@ public abstract class UserModel {
     @Schema(description = "E-mail do usuário", example = "gabriel@email.com")
     protected String email;
 
-    @Schema(description = "Senha do usuário", example = "123456")
-    protected String password;
-
     @Schema(description = "Data de nascimento", example = "1990-01-01")
     protected LocalDate birthDate;
 
     @Schema(description = "Telefone para contato", example = "(11) 99999-0000")
     protected String phone;
 
-    protected UserModel(String name, String email, String password, LocalDate birthDate, String phone) {
+    protected UserModel(String name, String email, LocalDate birthDate, String phone) {
         super();
         this.name = name;
         this.email = email;
-        this.password = password;
         this.birthDate = birthDate;
         this.phone = phone;
     }
@@ -44,14 +40,6 @@ public abstract class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public LocalDate getBirthDate() {
@@ -79,9 +67,6 @@ public abstract class UserModel {
         }
         if (email != null) {
             builder.append("email=").append(email).append(", ");
-        }
-        if (password != null) {
-            builder.append("password=").append(password).append(", ");
         }
         if (birthDate != null) {
             builder.append("birthDate=").append(birthDate).append(", ");

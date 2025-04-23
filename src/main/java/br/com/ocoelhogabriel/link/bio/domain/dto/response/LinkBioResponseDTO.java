@@ -2,6 +2,7 @@ package br.com.ocoelhogabriel.link.bio.domain.dto.response;
 
 import java.util.UUID;
 
+import br.com.ocoelhogabriel.link.bio.domain.entity.LinkBio;
 import br.com.ocoelhogabriel.link.bio.domain.model.LinkBioModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -15,6 +16,12 @@ public class LinkBioResponseDTO extends LinkBioModel {
             String emailUrl, String whatsappUrl, UUID id) {
         super(userId, headerImageUrl, title, subtitle, facebookUrl, instagramUrl, personalSiteUrl, personalSiteText, emailUrl, whatsappUrl);
         this.id = id;
+    }
+
+    public LinkBioResponseDTO(LinkBio linkBioModel) {
+        super(linkBioModel.getUserId(), linkBioModel.getHeaderImageUrl(), linkBioModel.getTitle(), linkBioModel.getSubtitle(), linkBioModel.getFacebookUrl(), linkBioModel.getInstagramUrl(),
+                linkBioModel.getPersonalSiteUrl(), linkBioModel.getPersonalSiteText(), linkBioModel.getEmailUrl(), linkBioModel.getWhatsappUrl());
+        this.id = linkBioModel.getId();
     }
 
     public UUID getId() {

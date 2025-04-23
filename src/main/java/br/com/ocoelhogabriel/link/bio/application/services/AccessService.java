@@ -5,49 +5,49 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
-import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateUserDTO;
-import br.com.ocoelhogabriel.link.bio.domain.dto.response.UserResponseDTO;
-import br.com.ocoelhogabriel.link.bio.domain.entity.repository.UserRepository;
+import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateAccessDTO;
+import br.com.ocoelhogabriel.link.bio.domain.dto.response.AccessResponseDTO;
+import br.com.ocoelhogabriel.link.bio.domain.entity.repository.AccessRepository;
 import jakarta.persistence.EntityNotFoundException;
 
-public class UserService {
+public class AccessService {
 
-    private final UserRepository repository;
+    private final AccessRepository repository;
 
-    public UserService(UserRepository repository) {
+    public AccessService(AccessRepository repository) {
         this.repository = repository;
         // Auto-generated constructor stub
     }
 
     public ResponseEntity<Object> findById(UUID id) throws Exception {
-        UserResponseDTO service = repository.findById(id).map(UserResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Service not found"));
+        AccessResponseDTO service = repository.findById(id).map(AccessResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Service not found"));
         return ResponseEntity.ok(service);
     }
 
     public ResponseEntity<Object> findAll() {
         try {
-            List<UserResponseDTO> services = repository.findAll().stream().map(UserResponseDTO::new).toList();
+            List<AccessResponseDTO> services = repository.findAll().stream().map(AccessResponseDTO::new).toList();
             return ResponseEntity.ok(services);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public ResponseEntity<Object> create(CreateUpdateUserDTO service) {
+    public ResponseEntity<Object> create(CreateUpdateAccessDTO service) {
         try {
-            UserResponseDTO createdService = new UserResponseDTO(repository.save(service.toEntity()));
+            AccessResponseDTO createdService = new AccessResponseDTO(repository.save(service.toEntity()));
             return ResponseEntity.ok(createdService);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public ResponseEntity<Object> update(UUID id, CreateUpdateUserDTO service) {
+    public ResponseEntity<Object> update(UUID id, CreateUpdateAccessDTO service) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
-            UserResponseDTO updatedService = new UserResponseDTO(repository.save(service.toEntity(id)));
+            AccessResponseDTO updatedService = new AccessResponseDTO(repository.save(service.toEntity(id)));
             return ResponseEntity.ok(updatedService);
         } catch (Exception e) {
             throw e;
