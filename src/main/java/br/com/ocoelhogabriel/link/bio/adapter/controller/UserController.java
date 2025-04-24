@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ocoelhogabriel.link.bio.application.services.UserService;
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateUserDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+@Tag(name = "User", description = "User management")
+public class UserController extends SecurityRestController {
 
     private final UserService service;
 

@@ -59,6 +59,11 @@ public class LinkBio extends UUIDAbstract {
         super(id);
     }
 
+    public LinkBio() {
+        super();
+        // Auto-generated constructor stub
+    }
+    
     public UUID getUserId() {
         return userId;
     }

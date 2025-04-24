@@ -38,8 +38,32 @@ public class User extends UUIDAbstract {
         this.phone = phone;
     }
 
+    public static User createUserDefault() {
+        User userDefault = new User(null);
+        userDefault.setName("Admin");
+        userDefault.setEmail("Admin@admin.com");
+        userDefault.setPhone(null);
+        userDefault.setBirthDate(LocalDate.EPOCH);
+
+        return userDefault;
+    }
+
+    public static User updateUserDefault(User userDefault) {
+        userDefault.setName("Admin");
+        userDefault.setEmail("Admin@admin.com");
+        userDefault.setPhone(null);
+        userDefault.setBirthDate(LocalDate.EPOCH);
+
+        return userDefault;
+    }
+
     public User(UUID id) {
         super(id);
+        // Auto-generated constructor stub
+    }
+
+    public User() {
+        super();
         // Auto-generated constructor stub
     }
 

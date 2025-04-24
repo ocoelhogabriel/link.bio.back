@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ocoelhogabriel.link.bio.application.services.AccessService;
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateAccessDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/access")
-public class AccessController {
+@Tag(name = "Access", description = "Access management")
+public class AccessController extends SecurityRestController {
 
     private final AccessService service;
 

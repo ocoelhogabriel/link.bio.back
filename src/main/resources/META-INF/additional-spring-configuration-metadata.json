@@ -4,6 +4,16 @@
 			"name": "link.bio.security.token.secret",
 			"type": "java.lang.String",
 			"description": "A description for 'link.bio.security.token.secret'"
+		},
+		{
+			"name": "link.bio.security.refresh.tolerance.seconds",
+			"type": "java.lang.String",
+			"description": "A description for 'link.bio.security.refresh.tolerance.seconds'"
+		},
+		{
+			"name": "link.bio.security.expiration.time.minutes",
+			"type": "java.lang.String",
+			"description": "A description for 'link.bio.security.expiration.time.minutes'"
 		}
 	]
 }

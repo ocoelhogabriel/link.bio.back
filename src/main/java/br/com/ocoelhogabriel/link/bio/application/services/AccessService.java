@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateAccessDTO;
 import br.com.ocoelhogabriel.link.bio.domain.dto.response.AccessResponseDTO;
+import br.com.ocoelhogabriel.link.bio.domain.entity.Access;
 import br.com.ocoelhogabriel.link.bio.domain.entity.repository.AccessRepository;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -15,9 +17,11 @@ import jakarta.persistence.EntityNotFoundException;
 public class AccessService {
 
     private final AccessRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AccessService(AccessRepository repository) {
+    public AccessService(AccessRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
         // Auto-generated constructor stub
     }
 
@@ -37,7 +41,8 @@ public class AccessService {
 
     public ResponseEntity<Object> create(CreateUpdateAccessDTO service) {
         try {
-            AccessResponseDTO createdService = new AccessResponseDTO(repository.save(service.toEntity()));
+            Access access = repository.save(service.toEntity(encodePassword(service.getPassword())));
+            AccessResponseDTO createdService = new AccessResponseDTO(access);
             return ResponseEntity.ok(createdService);
         } catch (Exception e) {
             throw e;
@@ -49,7 +54,8 @@ public class AccessService {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
-            AccessResponseDTO updatedService = new AccessResponseDTO(repository.save(service.toEntity(id)));
+            Access access = repository.save(service.toEntity(id, encodePassword(service.getPassword())));
+            AccessResponseDTO updatedService = new AccessResponseDTO(access);
             return ResponseEntity.ok(updatedService);
         } catch (Exception e) {
             throw e;
@@ -66,5 +72,9 @@ public class AccessService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

@@ -13,15 +13,15 @@ public class CreateUpdateAccessDTO extends RegisterModel {
         // Auto-generated constructor stub
     }
 
-    public Access toEntity() {
-        return new Access(null, this.getUserId(), this.getLogin(), this.getPassword(), null, this.getRole());
+    public Access toEntity(String password) {
+        return new Access(null, this.getUserId(), this.getLogin(), password, null, this.getRole());
     }
 
-    public Access toEntity(UUID id) {
-        return new Access(id, this.getUserId(), this.getLogin(), this.getPassword(), null, this.getRole());
+    public Access toEntity(UUID id, String password) {
+        return new Access(id, this.getUserId(), this.getLogin(), password, null, this.getRole());
     }
 
-    public Access toEntity(UUID id, String token) {
-        return new Access(id, this.getUserId(), this.getLogin(), this.getPassword(), token, this.getRole());
+    public Access toEntity(UUID id, String token, String password) {
+        return new Access(id, this.getUserId(), this.getLogin(), password, token, this.getRole());
     }
 }

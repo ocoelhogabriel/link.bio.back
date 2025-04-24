@@ -69,8 +69,32 @@ public class Access extends UUIDAbstract implements UserDetails {
         return this.login;
     }
 
+    public static Access createAccessDefault(UUID userId) {
+        Access accessDefault = new Access(null);
+        accessDefault.setLogin("admin");
+        accessDefault.setPassword("admin");
+        accessDefault.setUserId(userId);
+        accessDefault.setRole(UserRole.ADMIN);
+        accessDefault.setToken(null);
+        return accessDefault;
+    }
+
+    public static Access updateAccessDefault(Access accessDefault, UUID userId) {
+        accessDefault.setLogin("admin");
+        accessDefault.setPassword("admin");
+        accessDefault.setUserId(userId);
+        accessDefault.setRole(UserRole.ADMIN);
+        accessDefault.setToken(null);
+        return accessDefault;
+    }
+
     public Access(UUID id) {
         super(id);
+    }
+
+    public Access() {
+        super();
+        // Auto-generated constructor stub
     }
 
     public UUID getUserId() {

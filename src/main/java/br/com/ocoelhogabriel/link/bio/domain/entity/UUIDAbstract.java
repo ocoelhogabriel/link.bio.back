@@ -22,6 +22,11 @@ public abstract class UUIDAbstract {
         this.id = id;
     }
 
+    protected UUIDAbstract() {
+        super();
+        // Auto-generated constructor stub
+    }
+
     public UUID getId() {
         return id;
     }

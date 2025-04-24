@@ -3,42 +3,55 @@ package br.com.ocoelhogabriel.link.bio.application.services;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateAccessDTO;
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.LoginRequestDTO;
+import br.com.ocoelhogabriel.link.bio.domain.dto.response.AuthAccessResponse;
 import br.com.ocoelhogabriel.link.bio.domain.dto.response.AuthResponse;
 import br.com.ocoelhogabriel.link.bio.domain.entity.Access;
 import br.com.ocoelhogabriel.link.bio.domain.entity.repository.AccessRepository;
+import br.com.ocoelhogabriel.link.bio.domain.model.TokenDataDTO;
 import jakarta.validation.Valid;
 
 @Service
 public class AuthService {
 
+    @Lazy
+    private final TokenService tokenService;
+    @Lazy
     private final AccessRepository accessRepository;
+    @Lazy
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(AccessRepository accessRepository) {
+    public AuthService(AccessRepository accessRepository, TokenService tokenService, AuthenticationManager authenticationManager) {
+        this.tokenService = tokenService;
         this.accessRepository = accessRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@Valid @RequestBody LoginRequestDTO request) {
         Optional<Access> accessOpt = accessRepository.findByLogin(request.getLogin());
 
+        var userAutheticationToken = new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword());
+        authenticationManager.authenticate(userAutheticationToken);
         if (accessOpt.isEmpty() || !accessOpt.get().getPassword().equals(request.getPassword())) {
             return ResponseEntity.status(401).body("Login ou senha inválidos");
         }
 
         Access access = accessOpt.get();
-        if (access.getToken() == null || access.getToken().isBlank()) {
-            access.setToken(UUID.randomUUID().toString());
-            accessRepository.save(access);
-        }
+        TokenDataDTO tokenData = tokenService.generateToken(access);
+        access.setToken(tokenData.token());
+        accessRepository.save(access);
 
-        return ResponseEntity.ok(new AuthResponse(access.getToken(), access.getUserId()));
+        return ResponseEntity.ok(new AuthAccessResponse().accessGranted("Access granted!", tokenData.token(), access.getUserId(), tokenData.date(), tokenData.expiryIn()));
     }
 
     @PostMapping("/register")
@@ -50,7 +63,7 @@ public class AuthService {
         Access access = new Access(null, request.getUserId(), request.getLogin(), request.getPassword(), UUID.randomUUID().toString(), request.getRole());
         access = accessRepository.save(access);
 
-        return ResponseEntity.ok(new AuthResponse(access.getToken(), access.getUserId()));
+        return ResponseEntity.ok(new AuthResponse(true, "Access granted!", access.getUserId()));
     }
 
     @PostMapping("/refresh-token")
@@ -62,11 +75,11 @@ public class AuthService {
         }
 
         Access access = accessOpt.get();
-        String newToken = UUID.randomUUID().toString();
-        access.setToken(newToken);
+        TokenDataDTO tokenData = tokenService.refreshToken(access.getToken());
+        access.setToken(tokenData.token());
         accessRepository.save(access);
 
-        return ResponseEntity.ok(new AuthResponse(newToken, access.getUserId()));
+        return ResponseEntity.ok(new AuthAccessResponse().accessGranted("Access granted!", tokenData.token(), access.getUserId(), tokenData.date(), tokenData.expiryIn()));
     }
 
 }

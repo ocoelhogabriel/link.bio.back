@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ocoelhogabriel.link.bio.application.services.LinkBioService;
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateLinkBioDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/link-bio")
-public class LinlkBioController {
+@Tag(name = "LinkBio", description = "LinkBio management")
+public class LinlkBioController extends SecurityRestController {
 
     private final LinkBioService service;
 

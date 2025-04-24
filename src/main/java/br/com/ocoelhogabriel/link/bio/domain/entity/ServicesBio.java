@@ -27,6 +27,11 @@ public class ServicesBio extends UUIDAbstract {
         // Auto-generated constructor stub
     }
 
+    public ServicesBio() {
+        super();
+        // Auto-generated constructor stub
+    }
+    
     public UUID getUserId() {
         return userId;
     }

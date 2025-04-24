@@ -1,14 +1,17 @@
 package br.com.ocoelhogabriel.link.bio.domain.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(name = "LoginRequestDTO", description = "Requisição de login")
 public class LoginRequestDTO {
 
-    @Schema(description = "Login do usuário", example = "gabriel@email.com")
+    @NotNull(message = "Login não pode ser nulo")
+    @Schema(description = "Login do usuário", defaultValue = "admin", example = "admin ou admin@admin.com", nullable = false)
     public String login;
 
-    @Schema(description = "Senha de acesso", example = "123456")
+    @NotNull(message = "Senha não pode ser nula")
+    @Schema(description = "Senha de acesso", defaultValue = "admin", example = "admin", nullable = false)
     public String password;
 
     public LoginRequestDTO() {
