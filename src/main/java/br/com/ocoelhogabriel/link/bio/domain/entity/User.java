@@ -1,7 +1,7 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "users")
-public class User extends UUIDAbstract {
+public class User extends IDAbstract {
 
     @NotBlank
     @Column(nullable = false)
@@ -30,7 +30,7 @@ public class User extends UUIDAbstract {
     @Column
     private String phone;
 
-    public User(UUID id, String name, String email, LocalDate birthDate, String phone) {
+    public User(BigInteger id, String name, String email, LocalDate birthDate, String phone) {
         super(id);
         this.name = name;
         this.email = email;
@@ -57,7 +57,7 @@ public class User extends UUIDAbstract {
         return userDefault;
     }
 
-    public User(UUID id) {
+    public User(BigInteger id) {
         super(id);
         // Auto-generated constructor stub
     }

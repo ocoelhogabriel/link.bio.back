@@ -1,6 +1,6 @@
 package br.com.ocoelhogabriel.link.bio.domain.model;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import br.com.ocoelhogabriel.link.bio.domain.enuns.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,7 +10,7 @@ public abstract class RegisterModel {
 
     @Schema(description = "ID do usuário")
     @NotNull(message = "ID do usuário não pode ser nulo")
-    protected UUID userId;
+    protected BigInteger userId;
     @Schema(description = "Login do usuário")
     @NotNull(message = "Login do usuário não pode ser nulo")
     protected String login;
@@ -21,18 +21,18 @@ public abstract class RegisterModel {
     @NotNull(message = "Senha do usuário não pode ser nulo")
     protected UserRole role;
 
-    protected RegisterModel(UUID idUser, String login, String password, UserRole role) {
+    protected RegisterModel(BigInteger idUser, String login, String password, UserRole role) {
         this.userId = idUser;
         this.login = login;
         this.password = password;
         this.role = role;
     }
 
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID idUser) {
+    public void setUserId(BigInteger idUser) {
         this.userId = idUser;
     }
 

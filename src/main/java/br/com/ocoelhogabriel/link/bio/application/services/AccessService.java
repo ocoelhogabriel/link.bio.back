@@ -1,8 +1,11 @@
 package br.com.ocoelhogabriel.link.bio.application.services;
 
+import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,9 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class AccessService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AccessService.class);
+    private static final String ACCESS_DEFAULT_NOT_CREATED = "Access default not created";
+
     private final AccessRepository repository;
     private final PasswordEncoder passwordEncoder;
 
@@ -25,8 +31,8 @@ public class AccessService {
         // Auto-generated constructor stub
     }
 
-    public ResponseEntity<Object> findById(UUID id) throws Exception {
-        AccessResponseDTO service = repository.findById(id).map(AccessResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Service not found"));
+    public ResponseEntity<Object> findById(BigInteger id) throws Exception {
+        AccessResponseDTO service = repository.findById(id).map(AccessResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Access not found for id " + id));
         return ResponseEntity.ok(service);
     }
 
@@ -49,7 +55,7 @@ public class AccessService {
         }
     }
 
-    public ResponseEntity<Object> update(UUID id, CreateUpdateAccessDTO service) {
+    public ResponseEntity<Object> update(BigInteger id, CreateUpdateAccessDTO service) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
@@ -62,7 +68,7 @@ public class AccessService {
         }
     }
 
-    public ResponseEntity<Object> delete(UUID id) {
+    public ResponseEntity<Object> delete(BigInteger id) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
@@ -74,7 +80,48 @@ public class AccessService {
         }
     }
 
+    public Optional<Access> findByLogin(String login) {
+        try {
+            return repository.findByLogin(login);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void createAccessDefault(BigInteger userId) {
+        try {
+            logger.info("Creating access default for user with id: {}", userId);
+            Access newAccessDefault = Access.createAccessDefault(userId, encodePassword());
+            newAccessDefault = repository.save(newAccessDefault);
+
+            if (newAccessDefault.getId() == null) {
+                throw new RuntimeException(ACCESS_DEFAULT_NOT_CREATED);
+            }
+            logger.info("Access default created with id: {}", newAccessDefault.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(ACCESS_DEFAULT_NOT_CREATED, e);
+        }
+    }
+
+    public void updateAccessDefault(Access accessDefault, BigInteger userId) {
+        try {
+            logger.info("Updating access default for user with id: {}", userId);
+            Access updateAccessDefault = repository.save(Access.updateAccessDefault(accessDefault, userId, encodePassword()));
+
+            if (updateAccessDefault.getId() == null) {
+                throw new RuntimeException(ACCESS_DEFAULT_NOT_CREATED);
+            }
+            logger.info("Access default update with id: {}", updateAccessDefault.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(ACCESS_DEFAULT_NOT_CREATED, e);
+        }
+    }
+
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    private String encodePassword() {
+        return passwordEncoder.encode("admin");
     }
 }

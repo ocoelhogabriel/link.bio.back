@@ -1,27 +1,33 @@
 package br.com.ocoelhogabriel.link.bio.application.services;
 
+import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.ocoelhogabriel.link.bio.domain.dto.request.CreateUpdateUserDTO;
 import br.com.ocoelhogabriel.link.bio.domain.dto.response.UserResponseDTO;
+import br.com.ocoelhogabriel.link.bio.domain.entity.User;
 import br.com.ocoelhogabriel.link.bio.domain.entity.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final UserRepository repository;
+    private static final String USER_DEFAULT_NOT_CREATED = "User default not created";
 
     public UserService(UserRepository repository) {
         this.repository = repository;
         // Auto-generated constructor stub
     }
 
-    public ResponseEntity<Object> findById(UUID id) throws Exception {
+    public ResponseEntity<Object> findById(BigInteger id) throws Exception {
         UserResponseDTO service = repository.findById(id).map(UserResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Service not found"));
         return ResponseEntity.ok(service);
     }
@@ -44,7 +50,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> update(UUID id, CreateUpdateUserDTO service) {
+    public ResponseEntity<Object> update(BigInteger id, CreateUpdateUserDTO service) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
@@ -56,7 +62,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> delete(UUID id) {
+    public ResponseEntity<Object> delete(BigInteger id) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
@@ -67,4 +73,37 @@ public class UserService {
             throw e;
         }
     }
+
+    public BigInteger createUserDefault() {
+        try {
+            logger.info("Creating user default");
+            User userDefault = User.createUserDefault();
+            userDefault = repository.save(userDefault);
+
+            if (userDefault.getId() == null) {
+                throw new RuntimeException(USER_DEFAULT_NOT_CREATED);
+            }
+            logger.info("User default created with id: {}", userDefault.getId());
+            return userDefault.getId();
+        } catch (Exception e) {
+            throw new RuntimeException(USER_DEFAULT_NOT_CREATED, e);
+        }
+    }
+
+    public User updateUserDefault(BigInteger userId) {
+        try {
+            logger.info("Creating user default");
+            User userDefault = repository.findById(userId).orElseThrow(() -> new RuntimeException(USER_DEFAULT_NOT_CREATED));
+            User updateUuserDefault = repository.save(User.updateUserDefault(userDefault));
+
+            if (updateUuserDefault.getId() == null) {
+                throw new RuntimeException(USER_DEFAULT_NOT_CREATED);
+            }
+            logger.info("User default created with id: {}", updateUuserDefault.getId());
+            return updateUuserDefault;
+        } catch (Exception e) {
+            throw new RuntimeException(USER_DEFAULT_NOT_CREATED, e);
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 package br.com.ocoelhogabriel.link.bio.adapter.controller;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +35,7 @@ public class LinlkBioController extends SecurityRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getServiceById(@PathVariable UUID id) throws Exception {
+    public ResponseEntity<Object> getServiceById(@PathVariable BigInteger id) throws Exception {
         return service.findById(id);
     }
 
@@ -45,12 +45,12 @@ public class LinlkBioController extends SecurityRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateService(@PathVariable UUID id, @Valid @RequestBody CreateUpdateLinkBioDTO updatedService) {
+    public ResponseEntity<Object> updateService(@PathVariable BigInteger id, @Valid @RequestBody CreateUpdateLinkBioDTO updatedService) {
         return service.update(id, updatedService);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteService(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteService(@PathVariable BigInteger id) {
         return service.delete(id);
     }
 }

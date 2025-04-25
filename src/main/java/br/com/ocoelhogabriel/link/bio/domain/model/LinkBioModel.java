@@ -1,13 +1,13 @@
 package br.com.ocoelhogabriel.link.bio.domain.model;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public abstract class LinkBioModel {
 
-    @Schema(description = "Identificador do usuário (UUID)", example = "e4b1e302-f9c7-4ad3-bb8b-5a3e9a33fd2d", nullable = false)
-    protected UUID userId;
+    @Schema(description = "Identificador do usuário (BigInteger)", example = "e4b1e302-f9c7-4ad3-bb8b-5a3e9a33fd2d", nullable = false)
+    protected BigInteger userId;
 
     @Schema(description = "URL da imagem do cabeçalho", example = "https://cdn.domain.com/images/header.png")
     protected String headerImageUrl;
@@ -36,7 +36,7 @@ public abstract class LinkBioModel {
     @Schema(description = "URL para contato via WhatsApp", example = "https://wa.me/5511999990000")
     protected String whatsappUrl;
 
-    protected LinkBioModel(UUID userId, String headerImageUrl, String title, String subtitle, String facebookUrl, String instagramUrl, String personalSiteUrl, String personalSiteText, String emailUrl,
+    protected LinkBioModel(BigInteger userId, String headerImageUrl, String title, String subtitle, String facebookUrl, String instagramUrl, String personalSiteUrl, String personalSiteText, String emailUrl,
             String whatsappUrl) {
         super();
         this.userId = userId;
@@ -51,11 +51,11 @@ public abstract class LinkBioModel {
         this.whatsappUrl = whatsappUrl;
     }
 
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

@@ -1,6 +1,6 @@
 package br.com.ocoelhogabriel.link.bio.domain.dto.response;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import br.com.ocoelhogabriel.link.bio.domain.model.AuthResponseModel;
 
@@ -9,19 +9,19 @@ public class AuthAccessResponse extends AuthResponseModel {
     private String date;
     private String expiryIn;
 
-    public AuthAccessResponse(boolean success, String message, UUID userId, String token, String date, String expiryIn) {
+    public AuthAccessResponse(boolean success, String message, BigInteger userId, String token, String date, String expiryIn) {
         super(success, message, userId);
         this.token = token;
         this.date = date;
         this.expiryIn = expiryIn;
     }
 
-    public AuthAccessResponse(boolean success, String message, UUID userId) {
+    public AuthAccessResponse(boolean success, String message, BigInteger userId) {
         super(success, message, userId);
 
     }
 
-    public AuthAccessResponse accessGranted(String message, String token, UUID userId, String date, String expiryIn) {
+    public AuthAccessResponse accessGranted(String message, String token, BigInteger userId, String date, String expiryIn) {
         this.success = true;
         this.message = message;
         this.userId = userId;

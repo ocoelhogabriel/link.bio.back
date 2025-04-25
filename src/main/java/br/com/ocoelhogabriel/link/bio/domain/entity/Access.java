@@ -1,8 +1,8 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "access")
-public class Access extends UUIDAbstract implements UserDetails {
+public class Access extends IDAbstract implements UserDetails {
 
     /**
      * 
@@ -24,7 +24,7 @@ public class Access extends UUIDAbstract implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
-    private UUID userId;
+    private BigInteger userId;
 
     @NotBlank
     @Column(nullable = false, unique = true)
@@ -40,7 +40,7 @@ public class Access extends UUIDAbstract implements UserDetails {
     @Column
     private UserRole role;
 
-    public Access(UUID id, UUID userId, @NotBlank String login, @NotBlank String password, String token, UserRole role) {
+    public Access(BigInteger id, BigInteger userId, @NotBlank String login, @NotBlank String password, String token, UserRole role) {
         super(id);
         this.userId = userId;
         this.login = login;
@@ -69,26 +69,26 @@ public class Access extends UUIDAbstract implements UserDetails {
         return this.login;
     }
 
-    public static Access createAccessDefault(UUID userId) {
+    public static Access createAccessDefault(BigInteger userId, String passwordEncoder) {
         Access accessDefault = new Access(null);
         accessDefault.setLogin("admin");
-        accessDefault.setPassword("admin");
+        accessDefault.setPassword(passwordEncoder);
         accessDefault.setUserId(userId);
         accessDefault.setRole(UserRole.ADMIN);
         accessDefault.setToken(null);
         return accessDefault;
     }
 
-    public static Access updateAccessDefault(Access accessDefault, UUID userId) {
+    public static Access updateAccessDefault(Access accessDefault, BigInteger userId, String passwordEncoder) {
         accessDefault.setLogin("admin");
-        accessDefault.setPassword("admin");
+        accessDefault.setPassword(passwordEncoder);
         accessDefault.setUserId(userId);
         accessDefault.setRole(UserRole.ADMIN);
         accessDefault.setToken(null);
         return accessDefault;
     }
 
-    public Access(UUID id) {
+    public Access(BigInteger id) {
         super(id);
     }
 
@@ -97,11 +97,11 @@ public class Access extends UUIDAbstract implements UserDetails {
         // Auto-generated constructor stub
     }
 
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

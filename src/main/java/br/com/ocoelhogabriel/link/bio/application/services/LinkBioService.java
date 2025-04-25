@@ -1,7 +1,7 @@
 package br.com.ocoelhogabriel.link.bio.application.services;
 
+import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class LinkBioService {
         this.repository = repository;
     }
 
-    public ResponseEntity<Object> findById(UUID id) throws Exception {
+    public ResponseEntity<Object> findById(BigInteger id) throws Exception {
         LinkBioResponseDTO service = repository.findById(id).map(LinkBioResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("LinkBio not found"));
         return ResponseEntity.ok(service);
     }
@@ -44,7 +44,7 @@ public class LinkBioService {
         }
     }
 
-    public ResponseEntity<Object> update(UUID id, CreateUpdateLinkBioDTO service) {
+    public ResponseEntity<Object> update(BigInteger id, CreateUpdateLinkBioDTO service) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
@@ -56,7 +56,7 @@ public class LinkBioService {
         }
     }
 
-    public ResponseEntity<Object> delete(UUID id) {
+    public ResponseEntity<Object> delete(BigInteger id) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();

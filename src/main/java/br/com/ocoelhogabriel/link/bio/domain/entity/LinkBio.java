@@ -1,6 +1,6 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,10 +8,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "link_bio")
-public class LinkBio extends UUIDAbstract {
+public class LinkBio extends IDAbstract {
 
     @Column(nullable = false)
-    private UUID userId;
+    private BigInteger userId;
 
     @Column(name = "header_image_url")
     private String headerImageUrl;
@@ -40,7 +40,7 @@ public class LinkBio extends UUIDAbstract {
     @Column(name = "whatsapp_url")
     private String whatsappUrl;
 
-    public LinkBio(UUID id, UUID userId, String headerImageUrl, String title, String subtitle, String facebookUrl, String instagramUrl, String personalSiteUrl, String personalSiteText,
+    public LinkBio(BigInteger id, BigInteger userId, String headerImageUrl, String title, String subtitle, String facebookUrl, String instagramUrl, String personalSiteUrl, String personalSiteText,
             String emailUrl, String whatsappUrl) {
         super(id);
         this.userId = userId;
@@ -55,7 +55,7 @@ public class LinkBio extends UUIDAbstract {
         this.whatsappUrl = whatsappUrl;
     }
 
-    public LinkBio(UUID id) {
+    public LinkBio(BigInteger id) {
         super(id);
     }
 
@@ -64,11 +64,11 @@ public class LinkBio extends UUIDAbstract {
         // Auto-generated constructor stub
     }
     
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

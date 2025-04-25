@@ -34,7 +34,13 @@ public class ResponseExceptionGlobal {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        log.info("EntityNotFoundException: {}", ex.getMessage());
+        log.error("EntityNotFoundException: {}", ex.getMessage(), ex);
+        return ResponseUtil.notFound(ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        log.error("UsernameNotFoundException: {} - ", ex.getMessage(), ex);
         return ResponseUtil.notFound(ex.getMessage(), ex);
     }
 
@@ -95,7 +101,7 @@ public class ResponseExceptionGlobal {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {
         log.error("Exception: {} - ", ex.getMessage(), ex);
-        return ResponseUtil.serverError("An unexpected error occurred", ex);
+        return ResponseUtil.serverError(ex.getMessage(), ex);
     }
 
     @ExceptionHandler(ClientAbortException.class)
@@ -106,11 +112,6 @@ public class ResponseExceptionGlobal {
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleIllegalArgumentException(IllegalArgumentException ex) {
         log.debug("IllegalArgumentException: {} - ", ex.getMessage(), ex);
-    }
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public void handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        log.debug("UsernameNotFoundException: {} - ", ex.getMessage(), ex);
     }
 
     @ExceptionHandler(SignatureException.class)

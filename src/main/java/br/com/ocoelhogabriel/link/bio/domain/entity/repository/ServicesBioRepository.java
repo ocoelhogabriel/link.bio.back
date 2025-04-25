@@ -1,12 +1,12 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity.repository;
 
+import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.ocoelhogabriel.link.bio.domain.entity.ServicesBio;
 
-public interface ServicesBioRepository extends JpaRepository<ServicesBio, UUID> {
-    List<ServicesBio> findAllByUserId(UUID userId);
+public interface ServicesBioRepository extends JpaRepository<ServicesBio, BigInteger> {
+    List<ServicesBio> findAllByUserId(BigInteger userId);
 }

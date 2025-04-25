@@ -1,7 +1,7 @@
 package br.com.ocoelhogabriel.link.bio.domain.dto.response;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import br.com.ocoelhogabriel.link.bio.domain.entity.User;
 import br.com.ocoelhogabriel.link.bio.domain.model.UserModel;
@@ -11,9 +11,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class UserResponseDTO extends UserModel {
 
     @Schema(description = "Identificador dos dados dos Links (UUID)", example = "e4b1e302-f9c7-4ad3-bb8b-5a3e9a33fd2d", nullable = false)
-    public UUID id;
+    public BigInteger id;
 
-    public UserResponseDTO(String name, String email, LocalDate birthDate, String phone, UUID id, String name2, String email2, LocalDate birthDate2, String phone2) {
+    public UserResponseDTO(String name, String email, LocalDate birthDate, String phone, BigInteger id) {
         super(name, email, birthDate, phone);
         this.id = id;
     }

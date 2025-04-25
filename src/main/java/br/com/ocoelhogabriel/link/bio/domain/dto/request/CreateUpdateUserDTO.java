@@ -1,7 +1,7 @@
 package br.com.ocoelhogabriel.link.bio.domain.dto.request;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import br.com.ocoelhogabriel.link.bio.domain.entity.User;
 import br.com.ocoelhogabriel.link.bio.domain.model.UserModel;
@@ -18,7 +18,7 @@ public class CreateUpdateUserDTO extends UserModel {
         return new User(null, getName(), getEmail(), getBirthDate(), getPhone());
     }
 
-    public User toEntity(UUID id) {
+    public User toEntity(BigInteger id) {
         return new User(id, getName(), getEmail(), getBirthDate(), getPhone());
     }
 }

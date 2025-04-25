@@ -1,18 +1,19 @@
 package br.com.ocoelhogabriel.link.bio.config.security;
 
 import java.io.IOException;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.ocoelhogabriel.link.bio.application.services.TokenService;
-import br.com.ocoelhogabriel.link.bio.domain.entity.repository.AccessRepository;
-import br.com.ocoelhogabriel.link.bio.domain.entity.repository.UserRepository;
+import br.com.ocoelhogabriel.link.bio.application.services.AuthService;
+import br.com.ocoelhogabriel.link.bio.domain.entity.Access;
+import br.com.ocoelhogabriel.link.bio.shared.custom.CustomAccessDeniedHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,48 +22,48 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    TokenService tokenService;
-    @Autowired
-    AccessRepository accessRepository;
-    @Autowired
-    UserRepository userRepository;
+    private final AuthService authService;
+    private final CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
+
+    public SecurityFilter(AuthService authService) {
+        super();
+        this.authService = authService;
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            filterChain.doFilter(request, response);
-            return;
-        }
 
-        var token = this.recoverToken(request);
-        if (token != null) {
-            var login = tokenService.validateToken(token);
-            var access = accessRepository.findByLogin(login);
+        try {
 
-            if (access.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-                return;
+            String token = recoverToken(request);
+            if (token != null) {
+                Optional<String> login = authService.validateToken(token);
+                if (login.isEmpty()) {
+                    accessDeniedHandler.handle(request, response, new AccessDeniedException("Access Denied"));
+                    return;
+                }
+
+                Optional<Access> access = authService.findByLogin(login.get());
+
+                if (!access.isPresent()) {
+                    accessDeniedHandler.handle(request, response, new AccessDeniedException("Access Denied"));
+                    return;
+                }
+                UserDetails user = access.get();
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
-            UserDetails user = access.get();
-
-            if (user == null) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-                return;
-            }
-
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            accessDeniedHandler.handle(request, response, new AccessDeniedException(e.getMessage()));
         }
         filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-        if (authHeader == null)
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return null;
-        return authHeader.replace("Bearer ", "");
+        }
+        return authHeader.substring(7);
     }
 }

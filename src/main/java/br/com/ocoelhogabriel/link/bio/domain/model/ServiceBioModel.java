@@ -1,28 +1,28 @@
 package br.com.ocoelhogabriel.link.bio.domain.model;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public abstract class ServiceBioModel {
 
     @Schema(description = "Código do usuário dono do serviço")
-    protected UUID userId;
+    protected BigInteger userId;
 
     @Schema(description = "Slug ou referência para o link de bio", example = "gabriel.bio.com.br")
     protected String linkDeBio;
 
-    protected ServiceBioModel(UUID userId, String linkDeBio) {
+    protected ServiceBioModel(BigInteger userId, String linkDeBio) {
         super();
         this.userId = userId;
         this.linkDeBio = linkDeBio;
     }
 
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

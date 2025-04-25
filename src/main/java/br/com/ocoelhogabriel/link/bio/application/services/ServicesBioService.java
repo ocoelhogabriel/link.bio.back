@@ -1,7 +1,7 @@
 package br.com.ocoelhogabriel.link.bio.application.services;
 
+import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class ServicesBioService {
         this.repository = repository;
     }
 
-    public ResponseEntity<Object> findById(UUID id) throws Exception {
+    public ResponseEntity<Object> findById(BigInteger id) throws Exception {
         ServicesBioResponseDTO service = repository.findById(id).map(ServicesBioResponseDTO::new).orElseThrow(() -> new EntityNotFoundException("Service not found"));
         return ResponseEntity.ok(service);
     }
@@ -44,7 +44,7 @@ public class ServicesBioService {
         }
     }
 
-    public ResponseEntity<Object> update(UUID id, CreateUpdateServicesBioDTO service) {
+    public ResponseEntity<Object> update(BigInteger id, CreateUpdateServicesBioDTO service) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();
@@ -56,7 +56,7 @@ public class ServicesBioService {
         }
     }
 
-    public ResponseEntity<Object> delete(UUID id) {
+    public ResponseEntity<Object> delete(BigInteger id) {
         try {
             if (!repository.existsById(id)) {
                 return ResponseEntity.notFound().build();

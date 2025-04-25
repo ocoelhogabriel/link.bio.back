@@ -1,13 +1,13 @@
 package br.com.ocoelhogabriel.link.bio.domain.model;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 public abstract class AuthResponseModel {
     protected boolean success;
     protected String message;
-    protected UUID userId;
+    protected BigInteger userId;
 
-    protected AuthResponseModel(boolean success, String message, UUID userId) {
+    protected AuthResponseModel(boolean success, String message, BigInteger userId) {
         super();
         this.success = success;
         this.message = message;
@@ -15,7 +15,7 @@ public abstract class AuthResponseModel {
 
     }
 
-    protected AuthResponseModel(UUID userId) {
+    protected AuthResponseModel(BigInteger userId) {
         this.success = true;
         this.message = "Login successful";
         this.userId = userId;
@@ -42,11 +42,11 @@ public abstract class AuthResponseModel {
         this.message = message;
     }
 
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

@@ -1,6 +1,6 @@
 package br.com.ocoelhogabriel.link.bio.domain.entity;
 
-import java.util.UUID;
+import java.math.BigInteger;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,21 +8,21 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "services_bio")
-public class ServicesBio extends UUIDAbstract {
+public class ServicesBio extends IDAbstract {
 
     @Column(nullable = false)
-    private UUID userId;
+    private BigInteger userId;
 
     @Column(name = "link_de_bio", nullable = false)
     private String linkDeBio;
 
-    public ServicesBio(UUID id, UUID userId, String linkDeBio) {
+    public ServicesBio(BigInteger id, BigInteger userId, String linkDeBio) {
         super(id);
         this.userId = userId;
         this.linkDeBio = linkDeBio;
     }
 
-    public ServicesBio(UUID id) {
+    public ServicesBio(BigInteger id) {
         super(id);
         // Auto-generated constructor stub
     }
@@ -32,11 +32,11 @@ public class ServicesBio extends UUIDAbstract {
         // Auto-generated constructor stub
     }
     
-    public UUID getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 
